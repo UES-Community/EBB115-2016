@@ -1,0 +1,224 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  /* ── Heart Aerospace Color Palette ── */
+  --color-stratosphere: #716e85;
+  --color-jetstream-blue: #001489;
+  --color-onyx: #000000;
+  --color-cloud: #ffffff;
+
+  /* Surface aliases */
+  --color-atmospheric-canvas: #716e85;
+  --color-cloud-canvas: #ffffff;
+  --color-onyx-footer: #000000;
+
+  /* Utility tints for interactions */
+  --color-stratosphere-10: rgba(113, 110, 133, 0.10);
+  --color-stratosphere-20: rgba(113, 110, 133, 0.20);
+  --color-jetstream-10: rgba(0, 20, 137, 0.08);
+  --color-jetstream-20: rgba(0, 20, 137, 0.15);
+
+  /* ── Typography — Font Families ── */
+  /* Substituting NeueHaasGrotesk → Inter (closest free alternative) */
+  --font-display: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-sans: var(--font-inter), 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* ── Typography Scale ── */
+  --text-body: 18px;
+  --leading-body: 1.3;
+  --tracking-body: -0.18px;
+  --text-heading-sm: 46px;
+  --leading-heading-sm: 1;
+  --tracking-heading-sm: -0.92px;
+  --text-display: 156px;
+  --leading-display: 1;
+  --tracking-display: -3.12px;
+
+  /* ── Spacing Scale ── */
+  --spacing-unit: 4px;
+  --spacing-18: 18px;
+  --spacing-20: 20px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-35: 35px;
+  --spacing-40: 40px;
+  --spacing-46: 46px;
+  --spacing-70: 70px;
+
+  /* ── Border Radius — ALL ZERO (Heart Aerospace is sharp-cornered) ── */
+  --radius-tags: 0px;
+  --radius-cards: 0px;
+  --radius-inputs: 0px;
+  --radius-buttons: 0px;
+  --radius-codeblocks: 0px;
+  --radius-icons: 0px;
+  --radius-badges: 0px;
+
+  /* ── Shadows — NONE (Heart Aerospace is flat) ── */
+  /* No shadows in this design system */
+
+  /* ── Shadcn-compatible semantic tokens (Light theme) ── */
+  --color-background: var(--color-cloud);
+  --color-foreground: var(--color-onyx);
+
+  --color-muted: #f5f5f5;
+  --color-muted-foreground: #716e85;
+
+  --color-border: var(--color-onyx);
+  --color-input: #e5e5e5;
+  --color-ring: var(--color-jetstream-blue);
+
+  --color-primary: var(--color-onyx);
+  --color-primary-foreground: var(--color-cloud);
+
+  --color-secondary: #f0f0f0;
+  --color-secondary-foreground: var(--color-onyx);
+
+  --color-accent: var(--color-stratosphere-10);
+  --color-accent-foreground: var(--color-onyx);
+
+  --color-destructive: #cc0000;
+  --color-destructive-foreground: var(--color-cloud);
+
+  --color-card: var(--color-cloud);
+  --color-card-foreground: var(--color-onyx);
+
+  --color-popover: var(--color-cloud);
+  --color-popover-foreground: var(--color-onyx);
+
+  --color-sidebar: var(--color-cloud);
+  --color-sidebar-foreground: var(--color-onyx);
+  --color-sidebar-border: var(--color-onyx);
+
+  /* ── Callout Colors ── */
+  --color-callout-info: #f0f4ff;
+  --color-callout-info-border: var(--color-jetstream-blue);
+  --color-callout-warning: #fff8e6;
+  --color-callout-warning-border: #cc7700;
+  --color-callout-tip: #f5f0ff;
+  --color-callout-tip-border: var(--color-stratosphere);
+  --color-callout-danger: #fff0f0;
+  --color-callout-danger-border: #cc0000;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    /* Smooth scroll for TOC anchor links */
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-cloud);
+    color: var(--color-onyx);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-jetstream-blue);
+    outline-offset: 2px;
+  }
+
+  /* Monumental display type helper */
+  .text-display {
+    font-size: clamp(64px, 10vw, var(--text-display));
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+  }
+
+  .text-heading-sm {
+    font-size: var(--text-heading-sm);
+    line-height: var(--leading-heading-sm);
+    letter-spacing: var(--tracking-heading-sm);
+    font-weight: 600;
+  }
+}
+
+@layer utilities {
+  /* Outlined ghost link — Heart Aerospace signature interaction */
+  .ghost-link {
+    display: inline-flex;
+    align-items: center;
+    border: 1.5px solid var(--color-jetstream-blue);
+    padding: 12px 24px;
+    font-size: var(--text-body);
+    font-weight: 400;
+    letter-spacing: var(--tracking-body);
+    color: var(--color-onyx);
+    background: transparent;
+    border-radius: 0;
+    transition: color 150ms ease, background-color 150ms ease;
+    text-decoration: none;
+  }
+  .ghost-link:hover {
+    background-color: var(--color-jetstream-blue);
+    color: var(--color-cloud);
+  }
+
+  /* Atmospheric gradient — hero/section backgrounds */
+  .bg-atmospheric {
+    background: linear-gradient(
+      to bottom,
+      var(--color-stratosphere) 0%,
+      rgba(113, 110, 133, 0.6) 40%,
+      var(--color-cloud) 100%
+    );
+  }
+
+  /* Full-bleed layout utility */
+  .full-bleed {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
+
+  /* MDX prose for light Heart Aerospace theme */
+  .prose-course {
+    @apply prose max-w-none;
+    @apply prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-onyx;
+    @apply prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl;
+    @apply prose-h2:border-b prose-h2:border-onyx prose-h2:pb-3 prose-h2:mb-6;
+    @apply prose-p:leading-relaxed prose-p:text-onyx;
+    @apply prose-a:text-jetstream-blue prose-a:no-underline;
+    @apply hover:prose-a:underline;
+    @apply prose-strong:text-onyx prose-strong:font-semibold;
+    @apply prose-code:bg-gray-100 prose-code:border prose-code:border-onyx prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-mono prose-code:before:content-none prose-code:after:content-none;
+    @apply prose-pre:p-0 prose-pre:bg-transparent prose-pre:border-0;
+    @apply prose-li:marker:text-jetstream-blue;
+    @apply prose-blockquote:border-l-4 prose-blockquote:border-jetstream-blue prose-blockquote:pl-4 prose-blockquote:text-stratosphere prose-blockquote:not-italic;
+    @apply prose-hr:border-onyx;
+    @apply prose-table:border prose-table:border-onyx;
+    @apply prose-th:border prose-th:border-onyx prose-th:bg-gray-50;
+    @apply prose-td:border prose-td:border-onyx;
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--color-onyx);
+    border-radius: 0 !important;
+  }
+
+  .prose-course :where(pre):not(:where([class~="not-prose"] *)) {
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  .prose-course :where(code):not(:where([class~="not-prose"] *)) {
+    border-radius: 0;
+  }
+}
