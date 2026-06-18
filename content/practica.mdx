@@ -1,0 +1,154 @@
+---
+title: "Práctica: Aplicación de conceptos"
+description: "Ejercicios prácticos y sandboxes interactivos para consolidar el aprendizaje."
+section: practica
+order: 3
+---
+
+## Ejercicio 1: Aplicación básica
+
+Comenzamos con un ejercicio fundamental que integra los conceptos estudiados en la sección anterior. Lee el código, analiza su estructura y responde las preguntas al final.
+
+```javascript title="ejercicio-1.js"
+// Sistema de gestión básico
+function crearRegistro(id, nombre, valor) {
+  return {
+    id,
+    nombre,
+    valor,
+    timestamp: new Date().toISOString(),
+    toString() {
+      return `[${this.id}] ${this.nombre}: ${this.valor}`;
+    }
+  };
+}
+
+// Colección de registros
+const registros = [];
+
+function agregarRegistro(nombre, valor) {
+  const id = registros.length + 1;
+  const registro = crearRegistro(id, nombre, valor);
+  registros.push(registro);
+  return registro;
+}
+
+// Uso del sistema
+agregarRegistro("Temperatura", 36.5);
+agregarRegistro("Presión", 1013);
+agregarRegistro("Humedad", 78);
+
+registros.forEach(r => console.log(r.toString()));
+```
+
+<Callout type="info" title="Preguntas de análisis">
+  1. ¿Qué patrón de diseño se puede identificar en el código anterior?
+  2. ¿Cómo mejorarías la función `crearRegistro` para hacerla más robusta?
+  3. ¿Qué validaciones agregarías?
+</Callout>
+
+## Ejercicio 2: Sandbox interactivo
+
+Puedes modificar el siguiente sandbox y ver los resultados en tiempo real:
+
+<Sandbox
+  template="vanilla"
+  files={{
+    "/index.js": `// EBB115-2016 — Ejercicio interactivo
+// Modifica este código y observa los cambios
+
+const datos = [10, 25, 8, 42, 17, 33];
+
+// Función de análisis
+function analizar(arr) {
+  const sum = arr.reduce((a, b) => a + b, 0);
+  const promedio = sum / arr.length;
+  const max = Math.max(...arr);
+  const min = Math.min(...arr);
+  
+  return { sum, promedio, max, min };
+}
+
+const resultado = analizar(datos);
+
+document.body.innerHTML = \`
+  <div style="font-family: monospace; padding: 20px; background: #f5f5f5;">
+    <h2 style="font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: #716e85;">
+      Análisis de datos
+    </h2>
+    <p>Suma: <strong>\${resultado.sum}</strong></p>
+    <p>Promedio: <strong>\${resultado.promedio.toFixed(2)}</strong></p>
+    <p>Máximo: <strong>\${resultado.max}</strong></p>
+    <p>Mínimo: <strong>\${resultado.min}</strong></p>
+  </div>
+\`;
+`
+  }}
+/>
+
+## Ejercicio 3: Desafío de implementación
+
+Implementa la función `filtrarYOrdenar` siguiendo las especificaciones:
+
+```typescript title="desafio.ts"
+interface Item {
+  id: number;
+  nombre: string;
+  categoria: string;
+  prioridad: "alta" | "media" | "baja";
+}
+
+// TODO: Implementa esta función
+function filtrarYOrdenar(
+  items: Item[],
+  categoria: string,
+  ordenarPor: keyof Item
+): Item[] {
+  // Tu implementación aquí
+  return items
+    .filter(item => item.categoria === categoria)
+    .sort((a, b) => {
+      if (a[ordenarPor] < b[ordenarPor]) return -1;
+      if (a[ordenarPor] > b[ordenarPor]) return 1;
+      return 0;
+    });
+}
+
+// Datos de prueba
+const items: Item[] = [
+  { id: 1, nombre: "Tarea A", categoria: "desarrollo", prioridad: "alta" },
+  { id: 2, nombre: "Tarea B", categoria: "diseño", prioridad: "media" },
+  { id: 3, nombre: "Tarea C", categoria: "desarrollo", prioridad: "baja" },
+  { id: 4, nombre: "Tarea D", categoria: "desarrollo", prioridad: "alta" },
+];
+
+const resultado = filtrarYOrdenar(items, "desarrollo", "prioridad");
+console.log(resultado);
+```
+
+<Callout type="danger" title="Criterio de evaluación">
+  La función debe manejar arrays vacíos sin lanzar errores. Asegúrate de probar con un array vacío como caso borde.
+</Callout>
+
+## Recursos para la práctica
+
+<References title="Material de apoyo">
+  <ReferenceItem
+    title="JavaScript en MDN"
+    url="https://developer.mozilla.org/es/docs/Web/JavaScript"
+    description="Documentación completa de JavaScript, el lenguaje base de los ejercicios."
+    type="doc"
+  />
+  <ReferenceItem
+    title="TypeScript Handbook"
+    url="https://www.typescriptlang.org/docs/"
+    description="Referencia oficial de TypeScript para el ejercicio avanzado."
+    type="doc"
+  />
+  <ReferenceItem
+    title="Ejemplos del curso"
+    url="https://github.com"
+    description="Repositorio con todas las soluciones y ejercicios del curso."
+    type="github"
+  />
+</References>

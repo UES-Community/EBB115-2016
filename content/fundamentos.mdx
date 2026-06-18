@@ -1,0 +1,83 @@
+---
+title: "Fundamentos Teóricos"
+description: "Conceptos base, terminología esencial y marcos conceptuales de EBB115-2016."
+section: fundamentos
+order: 2
+---
+
+## Conceptos base
+
+Los fundamentos de esta materia se construyen sobre tres pilares conceptuales que debes dominar antes de avanzar a los temas más complejos.
+
+### Pilar 1: Definiciones esenciales
+
+Todo marco teórico comienza con definiciones precisas. En EBB115-2016 trabajamos con un vocabulario técnico riguroso que garantiza la comunicación efectiva entre pares.
+
+```python title="conceptos.py"
+# Representación conceptual básica
+class Concepto:
+    def __init__(self, nombre, definicion):
+        self.nombre = nombre
+        self.definicion = definicion
+    
+    def describir(self):
+        return f"{self.nombre}: {self.definicion}"
+
+# Instanciando conceptos clave
+c1 = Concepto("Abstracción", "Simplificar la complejidad ocultando detalles")
+c2 = Concepto("Modularidad", "Dividir el sistema en componentes independientes")
+
+print(c1.describir())
+print(c2.describir())
+```
+
+### Pilar 2: Estructura y organización
+
+La organización del conocimiento sigue un modelo jerárquico:
+
+| Nivel | Descripción | Ejemplo |
+|-------|-------------|---------|
+| Macro | Visión general | Arquitectura del sistema |
+| Meso | Componentes principales | Módulos y subsistemas |
+| Micro | Detalles de implementación | Funciones y clases |
+
+<Callout type="warning" title="Importante">
+  No saltes niveles de comprensión. Cada nivel construye sobre el anterior. Dominar el nivel macro antes de estudiar el micro es clave para una comprensión sólida.
+</Callout>
+
+### Pilar 3: Aplicación práctica
+
+Los conceptos solo cobran sentido cuando se aplican. En las lecciones de práctica encontrarás:
+
+- **Ejercicios guiados** con soluciones paso a paso
+- **Casos de estudio** del mundo real
+- **Sandboxes interactivos** para experimentar en tiempo real
+
+## Marco metodológico
+
+El enfoque metodológico de EBB115-2016 combina:
+
+1. **Aprendizaje teórico** — Comprensión conceptual profunda
+2. **Análisis crítico** — Evaluación de ventajas y limitaciones
+3. **Síntesis aplicada** — Integración del conocimiento en proyectos
+
+<Callout type="tip" title="Método de estudio">
+  Se recomienda estudiar cada lección en sesiones de 45-60 minutos, tomando notas activas y revisando los ejemplos de código con detenimiento.
+</Callout>
+
+## Referencias fundamentales
+
+<References title="Bibliografía base">
+  <ReferenceItem
+    title="Introducción a los fundamentos"
+    url="https://developer.mozilla.org"
+    description="Recursos de referencia técnica para conceptos fundamentales de programación y sistemas."
+    type="doc"
+  />
+  <ReferenceItem
+    title="Repositorio de ejemplos"
+    url="https://github.com"
+    description="Código fuente de los ejemplos presentados en las lecciones."
+    type="github"
+  />
+</References>

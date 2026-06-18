@@ -1,0 +1,7 @@
+{
+  "sections": [
+    { "id": "introduccion", "title": "Introducción" },
+    { "id": "fundamentos", "title": "Fundamentos" },
+    { "id": "practica", "title": "Práctica" }
+  ]
+}
