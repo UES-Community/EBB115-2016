@@ -46,7 +46,6 @@ export default async function LessonPage({ params }: PageProps) {
     <DocsLayout
       sections={sections}
       toc={toc}
-      slug={slug}
       title={lesson.frontmatter.title}
       description={lesson.frontmatter.description}
       progress={progress}

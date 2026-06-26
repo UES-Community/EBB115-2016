@@ -13,7 +13,7 @@ export function TableOfContents({ items, className }: TableOfContentsProps) {
 
   return (
     <nav
-      className={cn("hidden xl:block", className)}
+      className={className}
       aria-label="Tabla de contenidos"
     >
       <p className="mb-4 text-[10px] font-sans font-semibold tracking-widest text-stratosphere uppercase">

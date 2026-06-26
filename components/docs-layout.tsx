@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Menu, ChevronLeft, ChevronRight } from "lucide-react";
 import { Sidebar } from "@/components/sidebar";
 import { TableOfContents } from "@/components/table-of-contents";
-import { NotesPanel } from "@/components/notes-panel";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,7 +22,6 @@ interface DocsLayoutProps {
   children: React.ReactNode;
   sections: SectionMeta[];
   toc: TocItem[];
-  slug: string;
   title: string;
   description?: string;
   progress: number;
@@ -35,7 +33,6 @@ export function DocsLayout({
   children,
   sections,
   toc,
-  slug,
   title,
   description,
   progress,
@@ -186,15 +183,12 @@ export function DocsLayout({
                   )}
                 </nav>
               </article>
-
-              {/* Right TOC for XL screens */}
-              <aside className="hidden w-60 shrink-0 border-l border-onyx/20 p-6 xl:block bg-cloud">
-                <TableOfContents items={toc} />
-              </aside>
             </div>
 
-            {/* Desktop Notes Drawer */}
-            <NotesPanel slug={slug} className="hidden md:flex border-l border-onyx/20" />
+            {/* Right TOC Sidebar */}
+            <aside className="hidden lg:block w-60 shrink-0 border-l border-onyx/20 p-6 bg-cloud overflow-y-auto">
+              <TableOfContents items={toc} />
+            </aside>
           </main>
         </div>
       </div>
