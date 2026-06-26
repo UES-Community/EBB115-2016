@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "verify-pages": "node scripts/verify-pages.js"
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^2.20.0",
