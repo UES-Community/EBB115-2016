@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Menu, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, List } from "lucide-react";
+import { SiteHeader } from "@/components/layout/site-header";
 import { Sidebar } from "@/components/sidebar";
 import { TableOfContents } from "@/components/table-of-contents";
-import { Progress } from "@/components/ui/progress";
+import { CollapsibleSection } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -16,14 +17,17 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useLessonProgress } from "@/hooks/use-lesson-progress";
 import type { SectionMeta, TocItem, LessonMeta } from "@/lib/content";
 
 interface DocsLayoutProps {
   children: React.ReactNode;
+  slug: string;
   sections: SectionMeta[];
   toc: TocItem[];
   title: string;
   description?: string;
+  lessonPosition: { current: number; total: number };
   progress: number;
   prev: LessonMeta | null;
   next: LessonMeta | null;
@@ -31,95 +35,75 @@ interface DocsLayoutProps {
 
 export function DocsLayout({
   children,
+  slug,
   sections,
   toc,
   title,
   description,
+  lessonPosition,
   progress,
   prev,
   next,
 }: DocsLayoutProps) {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [tocOpen, setTocOpen] = React.useState(false);
+  const { isCompleted, toggleCompleted } = useLessonProgress(
+    slug,
+    lessonPosition.total
+  );
 
   return (
     <TooltipProvider>
       <div className="flex min-h-screen flex-col bg-cloud text-onyx font-sans">
-        {/* Top Header */}
-        <header className="sticky top-0 z-40 border-b border-onyx/20 bg-cloud/95 backdrop-blur-sm">
-          <div className="flex h-14 items-center gap-4 px-6">
-            <Dialog open={mobileOpen} onOpenChange={setMobileOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="lg:hidden"
-                  aria-label="Abrir menú"
-                >
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="h-[80vh] max-w-sm overflow-hidden p-0 bg-cloud border-onyx/20">
-                <DialogHeader className="sr-only">
-                  <DialogTitle>Navegación del curso</DialogTitle>
-                </DialogHeader>
-                <Sidebar sections={sections} className="w-full border-0" />
-              </DialogContent>
-            </Dialog>
+        <SiteHeader
+          variant="docs"
+          title={title}
+          lessonPosition={lessonPosition}
+          progress={progress}
+          sections={sections}
+        />
 
-            <div className="flex flex-1 items-center justify-between">
-              {/* Breadcrumbs */}
-              <div className="hidden lg:flex items-center gap-2 font-mono text-xs text-stratosphere">
-                <Link
-                  href="/"
-                  className="hover:text-jetstream-blue transition-colors"
-                >
-                  EBB115-2016
-                </Link>
-                <span className="text-onyx/30">/</span>
-                <span className="text-onyx font-medium">{title}</span>
-              </div>
-
-              {/* Progress & Actions */}
-              <div className="ml-auto flex items-center gap-6">
-                <div className="hidden items-center gap-3 sm:flex">
-                  <span className="text-xs font-mono text-stratosphere">
-                    progreso:
-                  </span>
-                  <Progress value={progress} className="w-24" />
-                  <span className="text-xs font-mono text-onyx font-semibold">
-                    {progress}%
-                  </span>
-                </div>
-
-                <Separator orientation="vertical" className="h-4 hidden sm:block" />
-
-                <Link
-                  href="/autor"
-                  className="text-xs font-mono text-stratosphere hover:text-jetstream-blue transition-colors"
-                >
-                  Editor
-                </Link>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Workspace Layout */}
         <div className="flex flex-1">
-          {/* Desktop Left Sidebar */}
           <Sidebar sections={sections} className="hidden lg:flex" />
 
-          {/* Main Content Area */}
-          <main className="flex flex-1 overflow-hidden">
+          <main id="main-content" className="flex flex-1 overflow-hidden">
             <div className="flex flex-1 flex-col overflow-y-auto">
-              <article className="mx-auto w-full max-w-3xl flex-1 px-8 py-10">
-                {/* Article header */}
+              {/* Mobile TOC trigger */}
+              {toc.length > 0 && (
+                <div className="lg:hidden border-b border-onyx/20 px-6 py-3">
+                  <Dialog open={tocOpen} onOpenChange={setTocOpen}>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full justify-start gap-2 font-mono text-xs"
+                      >
+                        <List className="h-4 w-4" />
+                        En esta página
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-sm bg-cloud border-onyx/20">
+                      <DialogHeader>
+                        <DialogTitle className="text-sm font-mono tracking-widest uppercase text-stratosphere">
+                          En esta página
+                        </DialogTitle>
+                      </DialogHeader>
+                      <TableOfContents
+                        items={toc}
+                        onLinkClick={() => setTocOpen(false)}
+                      />
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              )}
+
+              <article className="mx-auto w-full max-w-3xl flex-1 px-6 md:px-8 py-10">
                 <header className="mb-10 space-y-3 border-b border-onyx/20 pb-8">
                   <p className="text-xs font-mono tracking-widest text-stratosphere uppercase">
-                    EBB115-2016
+                    EBB115-2016 · Lección {lessonPosition.current} de{" "}
+                    {lessonPosition.total}
                   </p>
                   <h1
-                    className="font-display font-semibold text-onyx leading-tight"
+                    className="font-display font-semibold text-onyx leading-tight text-heading-sm"
                     style={{
                       fontSize: "clamp(28px, 4vw, 46px)",
                       letterSpacing: "-0.02em",
@@ -135,12 +119,32 @@ export function DocsLayout({
                   )}
                 </header>
 
-                {/* MDX content */}
+                {/* Inline collapsible TOC for tablet */}
+                {toc.length > 0 && (
+                  <div className="lg:hidden mb-8">
+                    <CollapsibleSection title="Contenido de esta página" defaultOpen={false}>
+                      <TableOfContents items={toc} className="pt-2" />
+                    </CollapsibleSection>
+                  </div>
+                )}
+
                 <div className="prose-course">{children}</div>
+
+                <div className="mt-10 flex justify-end">
+                  <Button
+                    variant={isCompleted ? "secondary" : "default"}
+                    size="sm"
+                    onClick={toggleCompleted}
+                    className="font-mono text-xs"
+                  >
+                    {isCompleted
+                      ? "Marcada como completada"
+                      : "Marcar como completada"}
+                  </Button>
+                </div>
 
                 <Separator className="my-10" />
 
-                {/* Lesson navigation */}
                 <nav
                   className="grid gap-px sm:grid-cols-2 border border-onyx/20"
                   aria-label="Navegación entre lecciones"
@@ -148,7 +152,7 @@ export function DocsLayout({
                   {prev ? (
                     <Link
                       href={`/curso/${prev.slug}`}
-                      className="group flex items-center gap-3 bg-cloud p-5 hover:bg-gray-50 transition-all duration-150 border-r border-onyx/10"
+                      className="group flex items-center gap-3 bg-cloud p-5 hover:bg-gray-50 transition-colors duration-150 border-r border-onyx/10"
                     >
                       <ChevronLeft className="h-5 w-5 text-stratosphere group-hover:text-jetstream-blue transition-colors shrink-0" />
                       <div className="min-w-0">
@@ -161,12 +165,25 @@ export function DocsLayout({
                       </div>
                     </Link>
                   ) : (
-                    <div className="border-r border-onyx/10" />
+                    <Link
+                      href="/"
+                      className="group flex items-center gap-3 bg-cloud p-5 hover:bg-gray-50 transition-colors duration-150 border-r border-onyx/10"
+                    >
+                      <ChevronLeft className="h-5 w-5 text-stratosphere group-hover:text-jetstream-blue transition-colors shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-mono text-stratosphere uppercase tracking-wider">
+                          Inicio del curso
+                        </p>
+                        <p className="text-sm font-semibold text-onyx group-hover:text-jetstream-blue transition-colors">
+                          Volver al índice
+                        </p>
+                      </div>
+                    </Link>
                   )}
                   {next ? (
                     <Link
                       href={`/curso/${next.slug}`}
-                      className="group flex items-center justify-between gap-3 bg-cloud p-5 hover:bg-gray-50 transition-all duration-150 text-right"
+                      className="group flex items-center justify-between gap-3 bg-cloud p-5 hover:bg-gray-50 transition-colors duration-150 text-right"
                     >
                       <div className="min-w-0 flex-1">
                         <p className="text-[10px] font-mono text-stratosphere uppercase tracking-wider">
@@ -179,15 +196,27 @@ export function DocsLayout({
                       <ChevronRight className="h-5 w-5 text-stratosphere group-hover:text-jetstream-blue transition-colors shrink-0" />
                     </Link>
                   ) : (
-                    <div />
+                    <Link
+                      href="/#contenido"
+                      className="group flex items-center justify-between gap-3 bg-cloud p-5 hover:bg-gray-50 transition-colors duration-150 text-right"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[10px] font-mono text-stratosphere uppercase tracking-wider">
+                          Fin del curso
+                        </p>
+                        <p className="text-sm font-semibold text-onyx group-hover:text-jetstream-blue transition-colors">
+                          Ver índice completo
+                        </p>
+                      </div>
+                      <ChevronRight className="h-5 w-5 text-stratosphere group-hover:text-jetstream-blue transition-colors shrink-0" />
+                    </Link>
                   )}
                 </nav>
               </article>
             </div>
 
-            {/* Right TOC Sidebar */}
             <aside className="hidden lg:block w-60 shrink-0 border-l border-onyx/20 p-6 bg-cloud overflow-y-auto">
-              <TableOfContents items={toc} />
+              <TableOfContents items={toc} enableScrollSpy />
             </aside>
           </main>
         </div>

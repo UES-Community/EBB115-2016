@@ -14,6 +14,7 @@ type ToastMessage = {
   id: string;
   title?: string;
   description?: string;
+  variant?: "default" | "destructive";
 };
 
 const ToastContext = React.createContext<{
@@ -42,7 +43,15 @@ export function Toaster({ children }: { children?: React.ReactNode }) {
       {children}
       <ToastProvider>
         {toasts.map((t) => (
-          <Toast key={t.id} open>
+          <Toast
+            key={t.id}
+            open
+            className={
+              t.variant === "destructive"
+                ? "border-destructive bg-callout-danger"
+                : undefined
+            }
+          >
             <div className="grid gap-1">
               {t.title && <ToastTitle>{t.title}</ToastTitle>}
               {t.description && (

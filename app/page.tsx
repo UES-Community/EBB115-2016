@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { BookOpen, ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from "lucide-react";
 import { getAllLessons, getSections } from "@/lib/content";
+import { PageShell, SiteHeader, SiteFooter } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
@@ -11,59 +12,14 @@ export default function HomePage() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-cloud text-onyx font-sans">
+      <PageShell>
+        <SiteHeader
+          variant="hero"
+          firstLessonSlug={firstLesson?.slug ?? null}
+        />
 
-        {/* ── Transparent Hero Navigation ── */}
-        <header
-          className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-10 py-6"
-          style={{ background: "transparent" }}
-        >
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <BookOpen className="h-5 w-5 text-cloud" />
-            <span className="font-sans text-sm font-semibold text-cloud tracking-wide">
-              EBB115-2016
-            </span>
-          </div>
-
-          {/* Nav links */}
-          <nav className="hidden md:flex items-center gap-7">
-            {[
-              { label: "Inicio", href: "/" },
-              { label: "Contenido", href: firstLesson ? `/curso/${firstLesson.slug}` : "#" },
-              { label: "Editor", href: "/autor" },
-            ].map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="text-cloud text-sm font-sans hover:opacity-70 transition-opacity"
-                style={{ letterSpacing: "-0.01em" }}
-              >
-                {link.label}
-              </Link>
-            ))}
-            {firstLesson && (
-              <Link
-                href={`/curso/${firstLesson.slug}`}
-                className="border-[1.5px] border-cloud text-cloud text-sm font-sans px-5 py-2 hover:bg-cloud hover:text-onyx transition-all"
-                style={{ letterSpacing: "-0.01em" }}
-              >
-                Comenzar
-              </Link>
-            )}
-          </nav>
-        </header>
-
-        {/* ── Full-Bleed Atmospheric Hero ── */}
-        <section
-          className="relative min-h-screen flex flex-col justify-end"
-          style={{
-            background:
-              "linear-gradient(to bottom, #716e85 0%, rgba(113,110,133,0.75) 45%, #ffffff 100%)",
-          }}
-        >
-          {/* Headline anchored bottom-left */}
-          <div className="px-10 pb-20 pt-36">
+        <section className="relative min-h-screen flex flex-col justify-end bg-atmospheric">
+          <div className="px-6 md:px-10 pb-20 pt-36">
             <p className="text-xs font-mono tracking-widest text-cloud/70 uppercase mb-6">
               Universidad de El Salvador · EBB115 · 2016
             </p>
@@ -86,46 +42,57 @@ export default function HomePage() {
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
               {firstLesson && (
-                <Link
-                  href={`/curso/${firstLesson.slug}`}
-                  className="inline-flex items-center gap-2 border-[1.5px] border-cloud text-cloud text-sm font-sans px-6 py-3 hover:bg-cloud hover:text-onyx transition-all"
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="border-cloud text-cloud hover:bg-cloud hover:text-onyx"
                 >
-                  Comenzar el curso
-                  <ChevronRight className="h-4 w-4" />
-                </Link>
+                  <Link href={`/curso/${firstLesson.slug}`}>
+                    Comenzar el curso
+                    <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </Button>
               )}
               <Link
                 href="/autor"
-                className="inline-flex items-center gap-2 text-cloud/70 text-sm font-sans hover:text-cloud transition-colors"
+                className="inline-flex items-center gap-2 text-cloud/70 text-sm font-sans hover:text-cloud transition-colors duration-150"
               >
                 Editor de contenido
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
 
-            {/* Stats bar */}
             <div className="mt-14 pt-8 border-t border-cloud/20 flex flex-wrap items-center gap-x-10 gap-y-3">
               <div>
-                <p className="text-cloud text-lg font-semibold font-mono">{lessons.length}</p>
-                <p className="text-cloud/60 text-xs font-mono tracking-wide">LECCIONES</p>
+                <p className="text-cloud text-lg font-semibold font-mono">
+                  {lessons.length}
+                </p>
+                <p className="text-cloud/60 text-xs font-mono tracking-wide">
+                  LECCIONES
+                </p>
               </div>
               <div className="h-8 w-px bg-cloud/20" />
               <div>
-                <p className="text-cloud text-lg font-semibold font-mono">{sections.length}</p>
-                <p className="text-cloud/60 text-xs font-mono tracking-wide">SECCIONES</p>
+                <p className="text-cloud text-lg font-semibold font-mono">
+                  {sections.length}
+                </p>
+                <p className="text-cloud/60 text-xs font-mono tracking-wide">
+                  SECCIONES
+                </p>
               </div>
               <div className="h-8 w-px bg-cloud/20" />
               <div>
                 <p className="text-cloud text-lg font-semibold font-mono">MDX</p>
-                <p className="text-cloud/60 text-xs font-mono tracking-wide">FORMATO</p>
+                <p className="text-cloud/60 text-xs font-mono tracking-wide">
+                  FORMATO
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── Cloud Canvas: Course Content ── */}
-        <section className="bg-cloud px-10 py-20">
-          {/* Section headline — 46px, left-anchored */}
+        <section id="contenido" className="bg-cloud px-6 md:px-10 py-20 scroll-mt-20">
           <h2
             className="font-display font-semibold text-onyx mb-12 border-b border-onyx pb-6"
             style={{
@@ -151,10 +118,12 @@ export default function HomePage() {
                         className="flex items-center justify-between py-5 group hover:pl-2 transition-all duration-150"
                       >
                         <div className="space-y-1">
-                          <p className="font-sans font-semibold text-onyx group-hover:text-jetstream-blue transition-colors">
+                          <p className="font-sans font-semibold text-onyx group-hover:text-jetstream-blue transition-colors duration-150">
                             {lesson.title}
                           </p>
-                          <p className="text-sm text-onyx/50">{lesson.description}</p>
+                          <p className="text-sm text-onyx/50">
+                            {lesson.description}
+                          </p>
                         </div>
                         <ArrowRight className="h-4 w-4 text-stratosphere group-hover:text-jetstream-blue group-hover:translate-x-1 transition-all shrink-0 ml-4" />
                       </Link>
@@ -171,8 +140,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── Features band (cloud canvas) ── */}
-        <section className="bg-gray-50 border-t border-onyx/10 px-10 py-16">
+        <section className="bg-gray-50 border-t border-onyx/10 px-6 md:px-10 py-16">
           <h2
             className="font-display font-semibold text-onyx mb-10"
             style={{
@@ -205,85 +173,21 @@ export default function HomePage() {
             ].map((feature, i) => (
               <div
                 key={feature.title}
-                className={`p-6 ${i < 3 ? "border-r border-onyx/20" : ""}`}
+                className={`p-6 ${i < 3 ? "sm:border-r border-onyx/20" : ""}`}
               >
                 <h3 className="font-mono font-semibold text-onyx text-sm tracking-wide mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-onyx/60 leading-relaxed">{feature.desc}</p>
+                <p className="text-sm text-onyx/60 leading-relaxed">
+                  {feature.desc}
+                </p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* ── Onyx Footer ── */}
-        <footer className="bg-onyx px-10 py-14">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
-            {/* Navigation */}
-            <div>
-              <p className="text-cloud text-sm font-semibold mb-4 tracking-wide">
-                Navegación
-              </p>
-              <ul className="space-y-2">
-                {[
-                  { label: "Inicio", href: "/" },
-                  { label: "Contenido", href: firstLesson ? `/curso/${firstLesson.slug}` : "#" },
-                  { label: "Editor", href: "/autor" },
-                ].map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-cloud/60 text-sm hover:text-cloud transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Tecnología */}
-            <div>
-              <p className="text-cloud text-sm font-semibold mb-4 tracking-wide">
-                Tecnología
-              </p>
-              <ul className="space-y-2">
-                {["Next.js 15", "Tailwind CSS v4", "Radix UI", "MDX Remote", "Shiki"].map((t) => (
-                  <li key={t} className="text-cloud/60 text-sm">
-                    {t}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Institución */}
-            <div>
-              <p className="text-cloud text-sm font-semibold mb-4 tracking-wide">
-                Institución
-              </p>
-              <address className="not-italic text-cloud/60 text-sm space-y-1">
-                <p>Universidad de El Salvador</p>
-                <p>Materia: EBB115-2016</p>
-                <p className="mt-3 text-cloud/40 text-xs font-mono">
-                  Powered by Antigravity
-                </p>
-              </address>
-            </div>
-          </div>
-
-          {/* Bottom bar */}
-          <div className="border-t border-cloud/10 pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div className="flex items-center gap-3">
-              <BookOpen className="h-4 w-4 text-cloud/40" />
-              <span className="text-cloud/40 text-xs font-mono">EBB115-2016</span>
-            </div>
-            <p className="text-cloud/30 text-xs font-mono">
-              © {new Date().getFullYear()} · Universidad de El Salvador
-            </p>
-          </div>
-        </footer>
-
-      </div>
+        <SiteFooter />
+      </PageShell>
     </TooltipProvider>
   );
 }

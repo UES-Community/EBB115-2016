@@ -112,6 +112,22 @@ export function getLessonProgress(slug: string): number {
   return Math.round(((index + 1) / lessons.length) * 100);
 }
 
+export function getLessonPosition(slug: string): {
+  current: number;
+  total: number;
+} {
+  const lessons = getAllLessons();
+  const index = lessons.findIndex((l) => l.slug === slug);
+  if (index === -1 || lessons.length === 0) {
+    return { current: 0, total: lessons.length };
+  }
+  return { current: index + 1, total: lessons.length };
+}
+
+export function getCourseSections(): { id: string; title: string }[] {
+  return getMeta().sections;
+}
+
 export function extractToc(content: string): TocItem[] {
   const headingRegex = /^(#{2,3})\s+(.+)$/gm;
   const items: TocItem[] = [];

@@ -37,6 +37,12 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body>
+        <a
+          href="#main-content"
+          className="sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:block focus:w-auto focus:h-auto focus:overflow-visible focus:whitespace-normal focus:border-[1.5px] focus:border-jetstream-blue focus:bg-cloud focus:px-4 focus:py-2 focus:text-sm focus:text-onyx"
+        >
+          Saltar al contenido
+        </a>
         <Toaster>{children}</Toaster>
       </body>
     </html>

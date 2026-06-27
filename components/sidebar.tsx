@@ -11,9 +11,10 @@ import type { SectionMeta } from "@/lib/content";
 interface SidebarProps {
   sections: SectionMeta[];
   className?: string;
+  onLinkClick?: () => void;
 }
 
-export function Sidebar({ sections, className }: SidebarProps) {
+export function Sidebar({ sections, className, onLinkClick }: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -51,8 +52,9 @@ export function Sidebar({ sections, className }: SidebarProps) {
                     <Link
                       key={lesson.slug}
                       href={href}
+                      onClick={onLinkClick}
                       className={cn(
-                        "block px-3 py-1.5 text-xs font-sans transition-all",
+                        "block px-3 py-1.5 text-xs font-sans transition-all duration-150",
                         isActive
                           ? "border-l-2 border-jetstream-blue text-jetstream-blue font-semibold pl-2 bg-jetstream-10"
                           : "text-onyx/60 hover:text-onyx hover:bg-gray-50"

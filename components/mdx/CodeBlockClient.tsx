@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Check, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/toaster";
 
 interface CodeBlockClientProps {
   html: string;
@@ -18,11 +19,20 @@ export function CodeBlockClient({
   showLineNumbers = true,
 }: CodeBlockClientProps) {
   const [copied, setCopied] = React.useState(false);
+  const { toast } = useToast();
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(rawCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(rawCode);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast({
+        title: "Error al copiar",
+        description: "No se pudo copiar el código al portapapeles.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -38,7 +48,9 @@ export function CodeBlockClient({
       <div className="relative">
         <button
           className={cn(
-            "absolute right-3 top-3 z-10 flex items-center justify-center h-7 w-7 border border-onyx/20 bg-white text-stratosphere hover:text-onyx hover:border-onyx transition-all opacity-0 group-hover:opacity-100 active:scale-95"
+            "absolute right-3 top-3 z-10 flex items-center justify-center h-7 w-7 border border-onyx/20 bg-white text-stratosphere",
+            "opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-jetstream-blue",
+            "hover:text-onyx hover:border-onyx transition-all active:scale-95"
           )}
           onClick={handleCopy}
           aria-label="Copiar código"

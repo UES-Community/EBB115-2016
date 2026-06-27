@@ -8,6 +8,7 @@ import {
   getSections,
   getAdjacentLessons,
   getLessonProgress,
+  getLessonPosition,
   extractToc,
   getAllSlugs,
 } from "@/lib/content";
@@ -40,14 +41,17 @@ export default async function LessonPage({ params }: PageProps) {
   const sections = getSections();
   const { prev, next } = getAdjacentLessons(slug);
   const progress = getLessonProgress(slug);
+  const lessonPosition = getLessonPosition(slug);
   const toc = extractToc(lesson.content);
 
   return (
     <DocsLayout
+      slug={slug}
       sections={sections}
       toc={toc}
       title={lesson.frontmatter.title}
       description={lesson.frontmatter.description}
+      lessonPosition={lessonPosition}
       progress={progress}
       prev={prev}
       next={next}
